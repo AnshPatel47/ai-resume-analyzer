@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes";
+import resumeRoutes from "./routes/resume.routes";
+import analysisRoutes from "./routes/analysis.routes";
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 app.use("/api/v1/users", authRoutes);
+app.use("/api/v1/resumes", resumeRoutes);
+app.use("/api/v1/analysis", analysisRoutes);
 
 // Health check route
 app.get("/api/v1/health", (req, res) => {
