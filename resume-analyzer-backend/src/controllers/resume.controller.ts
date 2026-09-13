@@ -3,6 +3,7 @@ import { AuthRequest } from "../middlewares/auth.middleware";
 import { extractTextFromPDF } from "../services/resumeParser.service";
 import prisma from "../config/db";
 import fs from "fs";
+import { uploadOnCloudinary } from "../services/cloudinary.service";
 
 export const uploadResume = async (req: AuthRequest, res: Response) => {
   try {
@@ -11,16 +12,16 @@ export const uploadResume = async (req: AuthRequest, res: Response) => {
     }
 
     const extractedText = await extractTextFromPDF(req.file.path);
+    const cloudinaryUrl = await uploadOnCloudinary(req.file.path);
 
     const resume = await prisma.resume.create({
       data: {
         userId: req.user!.id,
         fileName: req.file.originalname,
+        fileUrl: cloudinaryUrl,
         extractedText,
       },
     });
-
-    fs.unlinkSync(req.file.path);
 
     return res.status(201).json({ message: "Resume uploaded successfully", resume });
   } catch (error) {
