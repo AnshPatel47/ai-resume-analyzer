@@ -1,10 +1,12 @@
-import { AuthCard } from "@/components/auth/AuthCard";
+import { AuthLayout } from "@/components/auth/AuthLayout";
+import { AuthHeader } from "@/components/auth/AuthHeader";
 import { LoginForm } from "@/components/forms/LoginForm";
 
 export default function LoginPage() {
   return (
-    <AuthCard title="Welcome back">
+    <AuthLayout>
+      <AuthHeader title="Welcome back" subtitle="Log in to continue analyzing your resume." />
       <LoginForm />
-    </AuthCard>
+    </AuthLayout>
   );
 }

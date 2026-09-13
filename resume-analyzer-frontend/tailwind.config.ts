@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+    display: ["var(--font-display)", "sans-serif"],
+    body: ["var(--font-body)", "sans-serif"],
+  },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -43,6 +47,10 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+         emerald: {
+      DEFAULT: "#1F9D6B",
+      foreground: "#FFFFFF",
+    },
       },
       borderRadius: {
         lg: "var(--radius)",
