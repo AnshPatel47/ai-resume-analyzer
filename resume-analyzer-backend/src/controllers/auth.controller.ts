@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import prisma from "../config/db";
 import { generateToken } from "../utils/jwt.util";
+import { AuthRequest } from "../middlewares/auth.middleware";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
@@ -70,4 +71,13 @@ export const loginUser = async (req: Request, res: Response) => {
     console.error("Login error:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
+};
+
+export const logoutUser = async (req: AuthRequest, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+  return res.status(200).json({ message: "Logged out successfully" });
 };

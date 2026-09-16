@@ -35,3 +35,19 @@ export const createAnalysis = async (req: AuthRequest, res: Response) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getAnalysisById = async (req: AuthRequest, res: Response) => {
+  try {
+    const id = req.params.id as string;
+    const analysis = await prisma.analysis.findUnique({ where: { id } });
+
+    if (!analysis) {
+      return res.status(404).json({ message: "Analysis not found" });
+    }
+
+    return res.status(200).json({ analysis });
+  } catch (error) {
+    console.error("Get analysis error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

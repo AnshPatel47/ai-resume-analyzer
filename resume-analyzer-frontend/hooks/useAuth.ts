@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+
 
 interface RegisterPayload {
   username: string;
@@ -47,6 +48,22 @@ export function useLogin() {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Login failed");
+    },
+  });
+}
+
+export function useLogout() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      await api.post("/users/logout");
+    },
+    onSuccess: () => {
+      queryClient.clear();
+      toast.success("Logged out");
+      router.push("/login");
     },
   });
 }
