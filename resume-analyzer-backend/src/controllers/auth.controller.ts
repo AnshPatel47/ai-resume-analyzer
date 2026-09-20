@@ -3,14 +3,19 @@ import bcrypt from "bcrypt";
 import prisma from "../config/db";
 import { generateToken } from "../utils/jwt.util";
 import { AuthRequest } from "../middlewares/auth.middleware";
+import { registerSchema, loginSchema } from "../validations/auth.validation";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const { username, email, password, fullName } = req.body;
-
-    if (!username || !email || !password || !fullName) {
-      return res.status(400).json({ message: "All fields are required" });
+    const parsed = registerSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: parsed.error.flatten().fieldErrors,
+      });
     }
+
+    const { username, email, password, fullName } = parsed.data;
 
     const existingUser = await prisma.user.findFirst({
       where: { OR: [{ email }, { username }] },
@@ -36,11 +41,15 @@ export const registerUser = async (req: Request, res: Response) => {
 
 export const loginUser = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        message: "Validation failed",
+        errors: parsed.error.flatten().fieldErrors,
+      });
     }
+
+    const { email, password } = parsed.data;
 
     const user = await prisma.user.findUnique({ where: { email } });
 
