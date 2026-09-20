@@ -1,101 +1,105 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { PublicNavbar } from "@/components/layout/PublicNavbar";
+import { Hero } from "@/components/landing/Hero";
+import { Features } from "@/components/landing/Features";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Footer } from "@/components/layout/Footer";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
+
+export default function LandingPage() {
+  const { data: user, isLoading, isError } = useCurrentUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user && !isError) {
+      router.replace("/dashboard");
+    }
+  }, [isLoading, user, isError, router]);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen bg-background selection:bg-primary/20">
+      <PublicNavbar />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      <main className="overflow-hidden">
+        {/* Main Hero Section */}
+        <Hero />
+
+        {/* Live Social Proof Metrics Banner */}
+        <section className="border-y border-border/50 bg-card/40 py-12 backdrop-blur-sm">
+          <div className="mx-auto max-w-6xl px-6">
+            <ScrollReveal direction="up">
+              <div className="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+                <div>
+                  <div className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">99.8%</div>
+                  <div className="mt-1 text-xs text-muted-foreground font-medium uppercase tracking-wider">ATS Match Precision</div>
+                </div>
+                <div>
+                  <div className="font-display text-3xl font-extrabold text-emerald-500 sm:text-4xl">89%</div>
+                  <div className="mt-1 text-xs text-muted-foreground font-medium uppercase tracking-wider">Average Score Boost</div>
+                </div>
+                <div>
+                  <div className="font-display text-3xl font-extrabold text-foreground sm:text-4xl">Under 10s</div>
+                  <div className="mt-1 text-xs text-muted-foreground font-medium uppercase tracking-wider">Instant Analysis Speed</div>
+                </div>
+                <div>
+                  <div className="font-display text-3xl font-extrabold text-purple-500 sm:text-4xl">4.9 / 5</div>
+                  <div className="mt-1 text-xs text-muted-foreground font-medium uppercase tracking-wider">User Satisfaction</div>
+                </div>
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
+
+        {/* Features Summary Section */}
+        <Features />
+
+        {/* How It Works Section */}
+        <HowItWorks />
+
+        {/* Final Conversion Call to Action Section */}
+        <section className="relative px-6 py-24">
+          <div className="mx-auto max-w-5xl">
+            <ScrollReveal direction="up" scale={true}>
+              <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/10 via-purple-500/10 to-accent/20 p-10 text-center shadow-2xl backdrop-blur-xl sm:p-16">
+                <div className="relative z-10 mx-auto max-w-2xl">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-semibold text-primary mb-6">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span>GET STARTED TODAY</span>
+                  </div>
+
+                  <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+                    Stop guessing. Start getting shortlisted.
+                  </h2>
+
+                  <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+                    Transform your resume into a tailored, ATS-friendly application and stand out from hundreds of candidates.
+                  </p>
+
+                  <div className="mt-8 flex flex-wrap justify-center gap-4">
+                    <Button size="lg" className="rounded-full px-8 shadow-xl shadow-primary/20" asChild>
+                      <Link href="/register">
+                        Analyze Your Resume Now <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Ambient glowing orb */}
+                <div className="pointer-events-none absolute -bottom-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+              </div>
+            </ScrollReveal>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
   );
 }

@@ -17,8 +17,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "AI Resume Analyzer",
-  description: "Analyze your resume against any job description using AI",
+  title: "ResumeIQ | AI-Powered Resume Match & ATS Optimization",
+  description: "Analyze your resume against any job description using AI to spot keyword gaps and land more interviews.",
+  icons: {
+    icon: "/images/app-icon.png?v=4",
+    shortcut: "/images/app-icon.png?v=4",
+    apple: "/images/app-icon.png?v=4",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
