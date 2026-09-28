@@ -1,223 +1,226 @@
-# AI Resume Analyzer
+# 📄 AI Resume Analyzer
 
-> An AI-powered full-stack application that compares a resume with a job description and turns the gap into practical, actionable feedback.
+> An AI-powered full-stack application that analyzes resumes against target job descriptions, providing instant match scoring, missing keyword detection, and actionable resume optimization suggestions.
 
-![AI Resume Analyzer](https://img.shields.io/badge/Project-AI%20Resume%20Analyzer-1f9d6b?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/AnshPatel47/ai-resume-analyzer?style=flat-square)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-4285F4?style=flat-square&logo=google)
+![Express.js](https://img.shields.io/badge/Express.js-4-000000?style=flat-square&logo=express&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-6-2D3748?style=flat-square&logo=prisma&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-4285F4?style=flat-square&logo=google)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=flat-square&logo=tailwind-css)
 
-## 👋 About the Project
+---
 
-Applying for a job often means guessing whether a resume is aligned with the role. **AI Resume Analyzer** reduces that guesswork by comparing a candidate's resume with a target job description and highlighting the most important improvements.
+## 📌 Overview
 
-The application accepts a PDF resume, extracts its text, sends the resume and job description to Google Gemini, and presents a focused analysis containing:
+**AI Resume Analyzer** solves a common problem in job hunting: understanding how closely a candidate's resume matches a job description before applying. 
 
-- 📊 A match score from 0 to 100
-- 🔎 Important job-description keywords missing from the resume
-- 💡 Specific suggestions for improving the resume
+The application allows users to upload a PDF resume, extracts the text content, and passes both the resume and target job description to **Google Gemini AI**. The AI processes the documents and returns structured, actionable insights including:
 
-This project demonstrates a complete full-stack workflow: authentication, file uploads, document parsing, cloud storage, AI integration, relational data modeling, REST APIs, and a responsive web interface.
+- 📊 **Match Score (0-100%)**: Quantitative score indicating alignment with the role.
+- 🔎 **Missing Keywords & Skills**: Key technical and soft skills highlighted in the job description but absent from the resume.
+- 💡 **Actionable Suggestions**: Specific bullet-point improvements to optimize resume bullet points and formatting.
 
-## ✨ Core Features
+---
 
-- 🔐 User registration and login with bcrypt password hashing
-- 🍪 JWT authentication stored in an HTTP-only cookie
-- 📄 PDF resume upload with a 5 MB file-size limit
-- 🧾 Resume text extraction using `pdf-parse`
-- ☁️ Cloudinary storage for uploaded resume files
-- 🤖 Resume-to-job-description comparison using Google Gemini
-- 📈 Match score, missing keywords, and improvement suggestions
-- 🌓 Light and dark theme support
-- ⚡ TanStack React Query for server-state management and caching
-- 🔔 Toast feedback for uploads, authentication, and analysis actions
-- 🧱 Error boundaries and loading skeletons around analysis sections
+## ✨ Key Features
 
-## 🎯 Project Highlights
+- 🔐 **Authentication & Security**: User registration and login using `bcrypt` password hashing and secure HTTP-Only JWT cookies.
+- 📄 **PDF Text Extraction**: Automatic text extraction from uploaded PDF resumes using `pdf-parse`.
+- ☁️ **Cloud Storage**: Resume PDFs uploaded and safely stored on Cloudinary with secure URLs saved in PostgreSQL.
+- 🤖 **AI-Powered Insights**: Real-time integration with Google Gemini (`gemini-3.1-flash-lite`) returning structured JSON output.
+- 🛡️ **Schema Validation**: Backend input validation powered by `Zod`.
+- ⚡ **Modern Dynamic Frontend**: Built with Next.js 14 App Router, React 18, and Framer Motion micro-animations.
+- 🔄 **Server State & Caching**: Efficient API querying, caching, and state synchronization using TanStack React Query v5.
+- 🌓 **Dark & Light Mode**: Built-in dark/light mode toggle powered by `next-themes`.
+- 🔔 **Interactive UI**: Toast notifications via `Sonner` and UI components inspired by `shadcn/ui` and Radix UI.
 
-This project was built to showcase practical full-stack engineering skills:
-
-- Designing a REST API with Express and TypeScript
-- Modeling users, resumes, and analyses with Prisma and PostgreSQL
-- Securing protected routes with JWT middleware
-- Handling multipart uploads with Multer
-- Integrating an external generative AI provider
-- Building reusable UI components with Next.js, Tailwind CSS, and shadcn-style components
-- Connecting a client-side dashboard to a backend API with Axios
-- Managing asynchronous loading, errors, mutations, and cached queries
+---
 
 ## 🧠 How It Works
 
 ```mermaid
-flowchart LR
-	A[Create an account] --> B[Log in]
-	B --> C[Upload PDF resume]
-	C --> D[Extract resume text]
-	D --> E[Paste job description]
-	E --> F[Google Gemini analysis]
-	F --> G[Store analysis in PostgreSQL]
-	G --> H[Display score and recommendations]
+flowchart TD
+    A[🔑 User Registers / Logs In] --> B[📄 Upload PDF Resume]
+    B --> C[⚙️ Backend parses PDF text using pdf-parse]
+    C --> D[☁️ File uploaded to Cloudinary]
+    D --> E[📥 Save Resume record in PostgreSQL via Prisma]
+    E --> F[💼 User pastes Job Description]
+    F --> G[🤖 Send Resume Text + Job Description to Google Gemini AI]
+    G --> H[📊 Gemini returns structured JSON Analysis]
+    H --> I[💾 Save Analysis in Database]
+    I --> J[📈 Display Match Score, Missing Keywords & Suggestions on Dashboard]
 ```
 
-### Analysis Flow
-
-1. A user creates an account or logs in.
-2. The user uploads a PDF resume from the dashboard.
-3. The backend extracts readable text from the PDF.
-4. The original file is uploaded to Cloudinary and resume metadata is stored in PostgreSQL.
-5. The user pastes a job description.
-6. Google Gemini compares the resume text with the job description and returns structured JSON.
-7. The backend stores the score, missing keywords, suggestions, and job description.
-8. The frontend loads and displays the analysis in separate result sections.
+---
 
 ## 🏗️ Architecture
 
 ```text
-Next.js 14 + React 18 + Tailwind CSS
-			 │
-			 │ Axios / HTTP-only cookie
-			 ▼
-Express + TypeScript REST API
-	   │          │          │
-	   │          │          └── Google Gemini
-	   │          └───────────── Cloudinary
-	   └──────────────────────── Prisma + PostgreSQL
+               ┌──────────────────────────────────────────┐
+               │    Next.js 14 Frontend (App Router)      │
+               │  React 18 + Tailwind CSS + React Query   │
+               └────────────────────┬─────────────────────┘
+                                    │
+                         HTTP Request / JWT Cookie
+                                    │
+                                    ▼
+               ┌──────────────────────────────────────────┐
+               │         Express REST API (Node.js)       │
+               │        TypeScript + Zod Validation       │
+               └──────┬─────────────────┬───────────┬─────┘
+                      │                 │           │
+                      ▼                 ▼           ▼
+             ┌────────────────┐ ┌──────────────┐ ┌────────────────┐
+             │ PostgreSQL DB  │ │ Cloudinary   │ │ Google Gemini  │
+             │ (via Prisma)   │ │ (PDF Files)  │ │ (AI Model)     │
+             └────────────────┘ └──────────────┘ └────────────────┘
 ```
 
-### Main Data Model
+### Database Schema (Prisma)
 
-- **User**: account information and authentication data
-- **Resume**: uploaded filename, Cloudinary URL, extracted text, and owner
-- **Analysis**: job description, match score, missing keywords, suggestions, and related resume
+- **User**: Stores authentication credentials, profile details (`id`, `username`, `email`, `password`, `fullName`, `avatar`).
+- **Resume**: Links uploaded file details (`id`, `userId`, `fileName`, `fileUrl`, `extractedText`, `createdAt`) to a user.
+- **Analysis**: Stores the AI evaluation results (`id`, `resumeId`, `jobDescription`, `matchScore`, `missingKeywords`, `suggestions`, `createdAt`).
 
-User-to-resume and resume-to-analysis relationships use cascading deletes through Prisma.
+---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-
-- Next.js 14 (App Router)
-- React 18
-- TypeScript
-- Tailwind CSS
-- shadcn-style UI components
-- Radix UI
-- TanStack React Query
-- Axios
-- Next Themes
-- Sonner
-- Lucide React
+- **Framework**: Next.js 14 (App Router) & React 18
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS & Framer Motion
+- **UI Components**: Radix UI, Shadcn UI primitives, Lucide Icons
+- **State & Data Fetching**: TanStack React Query v5 & Axios
+- **Notifications & Themes**: Sonner & `next-themes`
 
 ### Backend
+- **Runtime & Framework**: Node.js & Express
+- **Language**: TypeScript
+- **Database & ORM**: PostgreSQL & Prisma ORM
+- **Validation**: Zod
+- **Authentication**: JWT & `cookie-parser`
+- **File Processing**: Multer & `pdf-parse`
 
-- Node.js
-- Express
-- TypeScript
-- Prisma ORM
-- PostgreSQL
-- JWT and HTTP-only cookies
-- bcrypt
-- Multer
-- `pdf-parse`
+### External Services
+- **AI Engine**: Google Gemini API (`@google/generative-ai`)
+- **Cloud File Storage**: Cloudinary SDK
 
-### Integrations
+---
 
-- Google Gemini for AI-powered resume analysis
-- Cloudinary for resume file storage
-
-## 📁 Project Structure
+## 📁 Repository Structure
 
 ```text
 AI_resume_analyzer/
-├── resume-analyzer-frontend/   # Next.js web application
-│   ├── app/                    # Routes, layouts, auth pages, dashboard
-│   ├── components/             # Reusable UI and dashboard components
-│   ├── hooks/                  # Auth, upload, and analysis hooks
-│   ├── lib/                    # Axios and query utilities
-│   └── types/                  # Shared frontend types
-├── resume-analyzer-backend/    # Express REST API
-│   ├── prisma/                 # Schema and database migrations
+├── resume-analyzer-frontend/    # Next.js Frontend Application
+│   ├── app/                     # Next.js App Router pages (auth, dashboard, features, how-it-works)
+│   ├── components/              # UI components (dashboard, forms, analysis view)
+│   ├── hooks/                   # Custom React hooks (auth, upload, analysis)
+│   ├── lib/                     # Axios instance & React Query config
+│   └── types/                   # TypeScript interfaces & types
+├── resume-analyzer-backend/     # Express REST API Backend
+│   ├── prisma/                  # Schema & migrations
 │   └── src/
-│       ├── controllers/        # Request handlers
-│       ├── middlewares/        # Auth and upload middleware
-│       ├── routes/              # API route definitions
-│       ├── services/            # AI, PDF, and Cloudinary services
-│       └── utils/               # JWT utilities
-└── postman/                    # API testing workspace structure
+│       ├── config/              # Configuration setups
+│       ├── controllers/         # API request controllers (auth, resume, analysis)
+│       ├── middlewares/         # Auth verification & Multer file upload
+│       ├── routes/              # Express API routes
+│       ├── services/            # Gemini AI, Cloudinary & PDF parsing services
+│       ├── utils/               # JWT token utilities
+│       └── validations/         # Zod validation schemas
+└── postman/                     # Postman API workspace collection
 ```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-Make sure the following are installed:
+Ensure you have the following installed locally:
+- **Node.js**: `v18.x` or higher
+- **npm**: `v9.x` or higher
+- **PostgreSQL**: Running locally or hosted (e.g. Supabase, Neon, Railway)
+- **Google Gemini API Key**: [Get a Gemini API Key](https://aistudio.google.com/)
+- **Cloudinary Account**: [Sign up for Cloudinary](https://cloudinary.com/)
 
-- Node.js 18+
-- npm
-- PostgreSQL database
-- Google Gemini API key
-- Cloudinary account and API credentials
+---
 
-### 1. Clone the repository
+### Setup Instructions
+
+#### 1. Clone the Repository
 
 ```bash
-git clone <your-repository-url>
-cd AI_resume_analyzer
+git clone https://github.com/AnshPatel47/ai-resume-analyzer.git
+cd ai-resume-analyzer
 ```
 
-### 2. Configure the backend
+#### 2. Configure & Start the Backend
 
 ```bash
 cd resume-analyzer-backend
 npm install
 ```
 
-Create `resume-analyzer-backend/.env`:
+Create a `.env` file inside `resume-analyzer-backend/`:
 
 ```env
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/resume_analyzer"
-JWT_SECRET="replace-with-a-long-random-secret"
-GEMINI_API_KEY="your-gemini-api-key"
-CLOUDINARY_CLOUD_NAME="your-cloudinary-cloud-name"
-CLOUDINARY_API_KEY="your-cloudinary-api-key"
-CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
 PORT=7000
-CORS_ORIGIN="http://localhost:3000"
 NODE_ENV=development
+CORS_ORIGIN=http://localhost:3000
+
+# Database Connection
+DATABASE_URL="postgresql://username:password@localhost:5432/resume_analyzer?schema=public"
+
+# Authentication
+JWT_SECRET=your_super_secret_jwt_key_change_in_production
+
+# Cloudinary Setup
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+
+# Google Gemini AI Setup
+GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
-Generate the Prisma client and apply migrations:
+Run database migrations & generate Prisma client:
 
 ```bash
 npx prisma generate
-npx prisma migrate deploy
+npx prisma migrate dev --name init
 ```
 
-Start the API:
+Start the backend server in development mode:
 
 ```bash
 npm run dev
 ```
 
-The backend runs at `http://localhost:7000` by default.
+The backend server will run at `http://localhost:7000`.
 
-### 3. Configure the frontend
+---
 
-Open a second terminal:
+#### 3. Configure & Start the Frontend
+
+Open a new terminal window:
 
 ```bash
 cd resume-analyzer-frontend
 npm install
 ```
 
-Create or update `resume-analyzer-frontend/.env.local`:
+Create a `.env.local` file inside `resume-analyzer-frontend/`:
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:7000/api/v1
 ```
 
-Start the Next.js app:
+Start the frontend development server:
 
 ```bash
 npm run dev
@@ -225,68 +228,52 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+---
+
 ## 🔌 API Reference
 
-The API base URL is `/api/v1`.
+Base API Endpoint: `/api/v1`
 
-| Method | Endpoint | Authentication | Description |
-| --- | --- | --- | --- |
-| `GET` | `/health` | Public | Check API availability |
-| `POST` | `/users/register` | Public | Register a new user |
-| `POST` | `/users/login` | Public | Log in and set the auth cookie |
-| `POST` | `/users/logout` | Required | Clear the auth cookie |
-| `GET` | `/users/current-user` | Required | Get the current user |
-| `POST` | `/resumes/upload` | Required | Upload a PDF using multipart field `resume` |
-| `POST` | `/analysis/create` | Required | Analyze `{ resumeId, jobDescription }` |
-| `GET` | `/analysis/:id` | Required | Retrieve a saved analysis |
+| Category | Method | Endpoint | Auth | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **System** | `GET` | `/health` | Public | Health check endpoint |
+| **Auth** | `POST` | `/users/register` | Public | Register a new user account |
+| **Auth** | `POST` | `/users/login` | Public | Log in user and receive HTTP-Only cookie |
+| **Auth** | `POST` | `/users/logout` | Required | Log out user and clear auth cookie |
+| **Auth** | `GET` | `/users/current-user` | Required | Retrieve current authenticated user profile |
+| **Resume** | `POST` | `/resumes/upload` | Required | Upload PDF resume (`multipart/form-data`) |
+| **Analysis** | `POST` | `/analysis/create` | Required | Submit `{ resumeId, jobDescription }` for AI analysis |
+| **Analysis** | `GET` | `/analysis/:id` | Required | Fetch specific analysis by ID |
+
+---
 
 ## 🧪 Available Scripts
 
-### Frontend
+### Backend (`resume-analyzer-backend`)
 
-```bash
-npm run dev       # Start the development server
-npm run build     # Create a production build
-npm run start     # Start the production server
-npm run lint      # Run Next.js linting
-```
+- `npm run dev`: Starts the backend server using `ts-node-dev` with live reload.
+- `npx prisma studio`: Launches the interactive Prisma Database GUI.
+- `npx prisma migrate dev`: Runs database schema migrations.
 
-### Backend
+### Frontend (`resume-analyzer-frontend`)
 
-```bash
-npm run dev       # Start the API with ts-node-dev
-npx prisma studio # Open the Prisma database browser
-```
+- `npm run dev`: Starts Next.js development server.
+- `npm run build`: Compiles production build.
+- `npm run start`: Starts Next.js production server.
+- `npm run lint`: Runs Next.js ESLint checks.
 
-## 🔒 Security and Data Notes
-
-- Passwords are hashed with bcrypt before storage.
-- Authentication uses an HTTP-only cookie to reduce client-side token exposure.
-- Protected API routes require a valid JWT.
-- Resume documents and extracted resume text can contain sensitive personal information. Use development credentials carefully and define appropriate retention and deletion policies before production use.
-
-## 🧭 Roadmap
-
-- [ ] Add automated backend and frontend tests
-- [ ] Add request validation with a schema-validation library
-- [ ] Enforce resume and analysis ownership at the API layer
-- [ ] Add resume and analysis history to the dashboard
-- [ ] Persist the active dashboard state across page refreshes
-- [ ] Add analysis export and resume deletion
-- [ ] Improve AI output validation and fallback handling
-- [ ] Add rate limiting, structured logging, and production observability
-- [ ] Add Docker-based local development and deployment documentation
-
-## 📌 Current Project Scope
-
-This repository is an actively developed portfolio project and functional MVP. The primary analysis flow is implemented end to end, while production hardening such as automated tests, advanced authorization, rate limiting, and observability remains part of the next iteration.
+---
 
 ## 👨‍💻 Developer
 
 **Ansh Patel**
 
-- LinkedIn: [linkedin.com/in/ansh-patel-073964285](https://www.linkedin.com/in/ansh-patel-073964285)
+- **GitHub**: [@AnshPatel47](https://github.com/AnshPatel47)
+- **LinkedIn**: [Ansh Patel](https://www.linkedin.com/in/ansh-patel-073964285)
+
+---
 
 ## 📄 License
 
-No license has been added to the repository yet. Add a license file before distributing or reusing the project publicly.
+This project is open-source and available under the [MIT License](LICENSE).
+
