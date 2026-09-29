@@ -7,3 +7,4 @@ node_modules
 # Temporary resume uploads
 public/temp/*
 !public/temp/.gitkeep
+dist
